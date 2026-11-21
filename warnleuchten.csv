@@ -1,0 +1,29 @@
+id;Name;Farbe;Gruppe;Genormt;Andere Namen / Varianten;Bedeutung;Was tun
+oil_pressure;Öldruck;rot;rot;ja;;Öldruck zu tief, Motor wird nicht richtig geschmiert. Kann beim starken Beschleunigen kurz aufflackern.;Sofort sicher anhalten, Motor aus, Ölstand prüfen/nachfüllen. Leuchtet weiter: nicht weiterfahren, Werkstatt.
+coolant;Kühlmitteltemperatur;rot;rot;ja;nur wassergekühlte Motoren;Motor überhitzt (zu wenig Kühlflüssigkeit, Leck).;Anhalten, Motor aus, abkühlen lassen, dann Kühlflüssigkeit prüfen. Werkstatt prüfen lassen.
+battery;Ladekontrolle (Batterie);rot;rot;ja;;Batterie wird nicht geladen (Lichtmaschine, Regler, Batterie).;Verbraucher aus, direkt zur Werkstatt. Motor springt evtl. nicht mehr an.
+brake;Bremsanlage;rot;rot;ja;nicht bei allen Modellen;Störung Bremsanlage, oft zu wenig Bremsflüssigkeit.;Vorsichtig anhalten, Bremsflüssigkeit prüfen. Bremsen anders: nicht weiterfahren.
+general;Allgemeine Warnung;rot oder gelb;rot;nein;z. B. BMW;Sammelwarnung, Display zeigt Details.;Display-Text lesen, Handbuch. Rot: anhalten.
+hazard;Warnblinker;rot (oder beide grünen Blinkerpfeile);rot;ja;;Warnblinkanlage an.;Nur bei Panne/Stauende, danach ausschalten.
+mil;Motorkontrollleuchte;gelb;gelb;ja;Motorstörung, FI, PGM-FI;Störung Motorsteuerung/Abgasreinigung. Blinkt: Zündaussetzer.;Leuchtet: hohe Drehzahlen meiden, bald Werkstatt. Blinkt: anhalten, 10 Min. abkühlen; blinkt wieder: max. 50 km/h zur Werkstatt.
+abs;ABS;gelb;gelb;ja;;Selbsttest, geht ab ca. 5–10 km/h aus. Während der Fahrt: ABS gestört.;Bremsen ohne ABS möglich, vorsichtig bremsen, Werkstatt.
+fuel;Kraftstoffreserve;gelb;gelb;ja;;Tank fast leer.;Bald tanken.
+oil_level;Ölstand niedrig;gelb;gelb;nein;nicht = Öldruck;Ölstand unter Minimum.;Ölstand auf ebenem Boden prüfen, nachfüllen.
+tc;Traktionskontrolle;gelb;gelb;nein;TCS, KTRC, ASC, DTC, MTC, HSTC;Blinkt: greift ein (normal). Dauernd: aus oder gestört.;Blinkt: sanfter Gas. Dauernd ohne eigenes Ausschalten: Werkstatt.
+tpms;Reifendruck;gelb;gelb;ja;RDC, TPMS;Reifendruck zu tief oder Sensor gestört.;Anhalten, Druck messen.
+service;Service fällig;gelb;gelb;nein;Schraubenschlüssel;Service-Intervall erreicht.;Werkstatttermin.
+ice;Glättewarnung;gelb (oft weiss);gelb;nein;Eiskristall;Glatteis möglich.;Vorsichtig fahren, v. a. Brücken und Schatten.
+immobilizer;Wegfahrsperre;gelb (je nach Marke rot);gelb;nein;HISS, EWS;Bleibt an: Schlüssel nicht erkannt. Blinkt bei Zündung aus: Diebstahlschutz aktiv (normal).;Andere Schlüssel weg, nochmals versuchen; sonst Ersatzschlüssel/Werkstatt.
+sidestand;Seitenständer ausgeklappt;gelb;gelb;nein;;Seitenständer unten.;Vor dem Losfahren hochklappen.
+rear_fog;Nebelschlussleuchte;gelb;gelb;ja;;Nebelschlussleuchte an.;Nur bei dichtem Nebel.
+bulb;Lampenausfall;gelb;gelb;nein;;Lampe defekt.;Lichter prüfen, Lampe ersetzen.
+neutral;Leerlauf (N);grün;info;ja;;Kein Gang eingelegt.;Nichts.
+turn;Blinker;grün;info;ja;;Blinker an.;Nach dem Abbiegen ausschalten.
+high;Fernlicht;blau;info;ja;;Fernlicht an.;Bei Gegenverkehr abblenden.
+low;Abblendlicht;grün;info;ja;oft nicht vorhanden;Abblendlicht an.;Nichts.
+position;Standlicht;grün;info;ja;;Standlicht an.;Beim Parken nicht vergessen.
+front_fog;Nebel-/Zusatzscheinwerfer;grün;info;ja;;Nebelscheinwerfer an.;Nichts.
+cruise;Tempomat;grün (weiss = bereit);info;nein;;Tempomat bereit/aktiv.;Bremse, Kupplung oder Gas zurück schaltet aus.
+grip;Griffheizung;grün;info;nein;;Griffheizung an.;Bei schwacher Batterie aus.
+seat;Sitzheizung;grün;info;nein;;Sitzheizung an.;Nichts.
+shift;Schaltanzeige;grün (oft weiss/rot);info;nein;Shift, Schaltblitz;Hochschalten.;Gang hochschalten.
