@@ -1,3 +1,4 @@
+import type { ColorValue } from 'react-native';
 import Svg, { Circle, Ellipse, Path, Rect } from 'react-native-svg';
 
 // Icons aus dem Prototyp (24×24, Strich-Icons).
@@ -43,7 +44,7 @@ export type IconName =
 type Props = {
   name: IconName;
   size?: number;
-  color?: string;
+  color?: ColorValue;
   strokeWidth?: number;
 };
 
