@@ -328,3 +328,51 @@ export async function getTip(slug: string): Promise<Tip | null> {
       .maybeSingle(),
   );
 }
+
+// ---------------------------------------------------------------------
+// Eigene Intervalle (Abweichungen vom Katalog)
+// ---------------------------------------------------------------------
+export type IntervalOverride = {
+  id: string;
+  motorcycle_id: string;
+  task_type_code: string;
+  interval_km: number | null;
+  interval_period: string | null;
+  is_enabled: boolean;
+};
+
+export async function getOverride(motorcycleId: string, taskCode: string): Promise<IntervalOverride | null> {
+  return check(
+    await supabase
+      .from('motorcycle_interval_overrides')
+      .select('*')
+      .eq('motorcycle_id', motorcycleId)
+      .eq('task_type_code', taskCode)
+      .maybeSingle(),
+  );
+}
+
+export async function saveOverride(
+  motorcycleId: string,
+  taskCode: string,
+  values: { interval_km: number | null; interval_months: number | null; is_enabled: boolean },
+): Promise<void> {
+  check(
+    await supabase.from('motorcycle_interval_overrides').upsert(
+      {
+        motorcycle_id: motorcycleId,
+        task_type_code: taskCode,
+        interval_km: values.interval_km,
+        interval_period: values.interval_months ? `${values.interval_months} months` : null,
+        is_enabled: values.is_enabled,
+      },
+      { onConflict: 'motorcycle_id,task_type_code' },
+    ),
+  );
+}
+
+export async function deleteOverride(motorcycleId: string, taskCode: string): Promise<void> {
+  check(
+    await supabase.from('motorcycle_interval_overrides').delete().eq('motorcycle_id', motorcycleId).eq('task_type_code', taskCode),
+  );
+}
