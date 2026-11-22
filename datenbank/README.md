@@ -15,6 +15,7 @@ Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt m
 | 001 | 20261118214001_001_schema.sql | 33 Tabellen, 2 Views, Row Level Security, Rechte |
 | 002 | 20261118214312_002_seed.sql | Nachschlagewerte, 79 Modelle, 125 Intervalle, 28 Warnleuchten |
 | 003 | 20261118214359_003_private_helpers.sql | Hilfsfunktionen ins Schema «private» (nicht über die API aufrufbar) |
+| 004 | 20261122140000_004_default_intervals.sql | Standard-Wartungsintervalle mit Quellen (G1–G13), Wartungsart MFK, Felder 1. Inverkehrsetzung / nächste MFK |
 
 ## GitHub-Integration (Deploy to production)
 
