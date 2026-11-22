@@ -95,7 +95,7 @@ export default function Termin() {
           label="Im Kalender eintragen"
           onPress={() =>
             router.push({
-              pathname: '/kalender/neu',
+              pathname: '/termine/neu',
               params: { type: 'workshop_appointment', task: status?.code ?? '', title: status ? `Werkstatt: ${status.name}` : 'Werkstatt-Termin' },
             })
           }

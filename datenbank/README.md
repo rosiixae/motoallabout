@@ -16,6 +16,8 @@ Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt m
 | 002 | 20261118214312_002_seed.sql | Nachschlagewerte, 79 Modelle, 125 Intervalle, 28 Warnleuchten |
 | 003 | 20261118214359_003_private_helpers.sql | Hilfsfunktionen ins Schema «private» (nicht über die API aufrufbar) |
 | 004 | 20261122140000_004_default_intervals.sql | Standard-Wartungsintervalle mit Quellen (G1–G13), Wartungsart MFK, Felder 1. Inverkehrsetzung / nächste MFK |
+| 005 | 20261122150000_005_delete_account.sql | Funktion delete_my_account (Konto in der App löschen) |
+| 006 | 20261122160000_006_tips.sql | 14 Tipps & Tricks aus dem Prototyp |
 
 ## GitHub-Integration (Deploy to production)
 

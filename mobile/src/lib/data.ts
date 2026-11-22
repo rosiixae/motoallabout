@@ -376,3 +376,9 @@ export async function deleteOverride(motorcycleId: string, taskCode: string): Pr
     await supabase.from('motorcycle_interval_overrides').delete().eq('motorcycle_id', motorcycleId).eq('task_type_code', taskCode),
   );
 }
+
+export async function getDisabledOverrides(motorcycleId: string): Promise<IntervalOverride[]> {
+  return check(
+    await supabase.from('motorcycle_interval_overrides').select('*').eq('motorcycle_id', motorcycleId).eq('is_enabled', false),
+  );
+}

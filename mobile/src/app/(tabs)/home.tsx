@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 import { MaintenanceRow } from '@/components/MaintenanceRow';
@@ -11,6 +11,7 @@ import { formatKm, monthNames, toIsoDate } from '@/lib/format';
 import { useGarage } from '@/lib/garage';
 import { useFocusData } from '@/lib/hooks';
 import { openStatus } from '@/lib/navigation';
+import { ensurePermission, syncMaintenanceReminders } from '@/lib/notifications';
 import { useMaintenance } from '@/lib/useMaintenance';
 import { colors, useTheme } from '@/theme/theme';
 
@@ -49,6 +50,22 @@ export default function Home() {
     return set;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [extra.data, maintenance.data]);
+
+  // Erinnerungen auf dem Handy aktuell halten
+  useEffect(() => {
+    const data = maintenance.data;
+    if (!data || !current) return;
+    const prefs = data.prefs;
+    void (async () => {
+      if (prefs?.maintenance_reminders !== false) await ensurePermission();
+      await syncMaintenanceReminders(data.statuses, {
+        enabled: prefs?.maintenance_reminders ?? true,
+        seasonal: prefs?.seasonal_reminders ?? true,
+        daysBefore: prefs?.remind_days_before ?? 14,
+        bikeName: motorcycleTitle(current).full,
+      });
+    })();
+  }, [maintenance.data, current]);
 
   const name = extra.data?.profile?.display_name;
   const drive = current ? motorcycleDrive(current) : null;

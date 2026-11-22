@@ -9,13 +9,14 @@ import {
 } from './data';
 import { useFocusData } from './hooks';
 import { buildStatusList, type TaskStatus } from './maintenance';
-import type { MaintenanceEvent, Motorcycle, TaskType } from './types';
+import type { MaintenanceEvent, Motorcycle, NotificationPreferences, TaskType } from './types';
 
 export type MaintenanceData = {
   statuses: TaskStatus[];
   taskTypes: TaskType[];
   events: MaintenanceEvent[];
   currentKm: number;
+  prefs: NotificationPreferences | null;
 };
 
 /** Lädt alles, was die Wartungsübersicht für ein Motorrad braucht. */
@@ -39,6 +40,6 @@ export function useMaintenance(motorcycle: Motorcycle | null) {
       today: new Date(),
       reminders: prefs ? { kmBefore: prefs.remind_km_before, daysBefore: prefs.remind_days_before } : undefined,
     });
-    return { statuses, taskTypes, events, currentKm };
+    return { statuses, taskTypes, events, currentKm, prefs };
   }, [motorcycle?.id, motorcycle?.first_registration_on, motorcycle?.next_inspection_on, userId]);
 }
