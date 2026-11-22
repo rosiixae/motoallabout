@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "MotoAllAbout",
+    "slug": "motoallabout",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "motoallabout",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "ch.motoallabout.app"
+    },
+    "android": {
+      "package": "ch.motoallabout.app"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "color": "#C2410C"
+        }
+      ]
+    ]
+  }
+}

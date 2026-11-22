@@ -1,0 +1,38 @@
+# Prüft die App bei jedem Push: Pakete installieren, Typen prüfen,
+# Logik-Tests laufen lassen und die App einmal für Android bündeln.
+name: App prüfen
+
+on:
+  push:
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/mobile.yml'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Pakete installieren
+        run: npm install --no-audit --no-fund
+
+      - name: Expo-Versionen prüfen
+        run: npx expo install --check
+
+      - name: Typen prüfen (TypeScript)
+        run: npx tsc --noEmit
+
+      - name: Logik-Tests
+        run: npm test
+
+      - name: App bündeln (Android)
+        run: npx expo export --platform android --output-dir /tmp/expo-export
