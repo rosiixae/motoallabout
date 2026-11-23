@@ -13,7 +13,7 @@ Stand: 22.11.2026
 | 7 | Tipps & Tricks (Migration 006), Warnleuchten mit Symbolen | ✅ fertig |
 | 8 | Erinnerungen auf dem Handy (Wartung, Saison, Termine, km-Stand), Einstellungen | ✅ fertig |
 | 9 | Modelldaten vervollständigen: jetzt 52 geprüft, 20 prüfen, 7 offen (Beta RR 125, Aprilia SX 125 / RS 125, SWM SM 125 R, Zontes 368 G, Voge 900 DSX, Yamaha Ray ZR 125 – kein Handbuch online); Quellen S0–S23 mit Titel und Link | ✅ 23.11.2026 |
-| 10 | Test auf dem Handy mit Expo Go, Korrekturen | ⏳ |
+| 10 | Test mit Expo Go im Android-Emulator (Mac, Android Studio), Anleitung in `mobile/README.md`; iPhone erst mit Apple-Entwicklerkonto (App Store hat nur Expo Go SDK 54) | 🔄 Test läuft |
 | 11 | Veröffentlichung: Datenschutzerklärung, App-Icon, Fotos, Store-Konten, Testpersonen | ⏳ |
 
 ## Ordner
