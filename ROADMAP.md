@@ -12,7 +12,7 @@ Stand: 22.11.2026
 | 6 | Kalender mit Terminen und Fälligkeiten, Termin planen | ✅ fertig |
 | 7 | Tipps & Tricks (Migration 006), Warnleuchten mit Symbolen | ✅ fertig |
 | 8 | Erinnerungen auf dem Handy (Wartung, Saison, Termine, km-Stand), Einstellungen | ✅ fertig |
-| 9 | Modelldaten vervollständigen (28 «prüfen», 14 «offen»), Quellen S0–S13 | ⏳ als Nächstes |
+| 9 | Modelldaten vervollständigen: jetzt 52 geprüft, 20 prüfen, 7 offen (Beta RR 125, Aprilia SX 125 / RS 125, SWM SM 125 R, Zontes 368 G, Voge 900 DSX, Yamaha Ray ZR 125 – kein Handbuch online); Quellen S0–S23 mit Titel und Link | ✅ 23.11.2026 |
 | 10 | Test auf dem Handy mit Expo Go, Korrekturen | ⏳ |
 | 11 | Veröffentlichung: Datenschutzerklärung, App-Icon, Fotos, Store-Konten, Testpersonen | ⏳ |
 

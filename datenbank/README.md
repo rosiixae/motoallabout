@@ -18,6 +18,7 @@ Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt m
 | 004 | 20261122131943_004_default_intervals.sql | Standard-Wartungsintervalle mit Quellen (G1–G13), Wartungsart MFK, Felder 1. Inverkehrsetzung / nächste MFK |
 | 005 | 20261122150000_005_delete_account.sql | Funktion delete_my_account (Konto in der App löschen) |
 | 006 | 20261122160000_006_tips.sql | 14 Tipps & Tricks aus dem Prototyp |
+| 007 | 20261123150000_007_model_data.sql | Modelldaten Phase 9: 52 geprüft, 20 prüfen, 7 offen; Quellen S0–S23 mit Titel und Link |
 
 ## GitHub-Integration (Deploy to production)
 
@@ -29,6 +30,7 @@ Jede **neue** Datei in `supabase/migrations/`, die auf `main` landet, wird autom
 - Nie eine eingespielte Datei ändern oder umbenennen. Jede Änderung ist eine neue Datei.
 - Neue Datei immer mit Zeitstempel davor, später als die letzte: `JJJJMMTTHHMMSS_004_beschreibung.sql`, z. B. `20261125120000_004_tipps.sql`.
 - Neue Modelle: CSV ergänzen, `python3 datenbank/make_seed.py . <datei>` gibt die Vorlage. Daraus nur die neuen Zeilen in eine neue Migration übernehmen.
+- Geänderte Modellwerte (Intervalle, Ölsorte, Status, Hinweis, Quellen): `motorrad-liste-schweiz.csv` und `datenbank/quellen.csv` anpassen, dann `python3 datenbank/make_model_update.py . supabase/migrations/<zeitstempel>_00X_model_data.sql` – die Datei gleicht alle bestehenden Modelle ab.
 - Nach jeder Änderung die Security Advisors im Dashboard prüfen.
 
 ## Geprüft
