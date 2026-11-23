@@ -21,7 +21,7 @@ Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt m
 
 ## GitHub-Integration (Deploy to production)
 
-Supabase ist mit diesem Repository verbunden (Working directory `.`, Branch `main`).
+Supabase ist mit diesem Repository verbunden (Working directory `.`, Branch `main`). Funktioniert seit 23.11.2026: 005 und 006 wurden so eingespielt.
 Jede **neue** Datei in `supabase/migrations/`, die auf `main` landet, wird automatisch in die Produktionsdatenbank eingespielt.
 
 ## Regeln für Änderungen
@@ -37,6 +37,6 @@ Jede **neue** Datei in `supabase/migrations/`, die auf `main` landet, wird autom
 - Person A sieht nur ihre Motorräder; Person B sieht und ändert nichts davon.
 - Ohne Login: Katalog und Warnleuchten lesbar, keine Nutzerdaten.
 - Niemand kann über die App den Katalog ändern.
-- Security Advisor: keine Warnungen.
+- Security Advisor: eine gewollte Warnung. `delete_my_account` darf von eingeloggten Personen aufgerufen werden, löscht aber nur das eigene Konto (auth.uid()).
 
 Hinweis: Gratis-Projekte werden nach einer Woche ohne Nutzung pausiert. Im Dashboard mit «Restore» wieder starten.
