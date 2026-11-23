@@ -1,4 +1,4 @@
-# Supabase-Konfiguration für MotoAllAbout.
+# Supabase-Konfiguration für MotoAllAbout (GitHub-Integration aktiv seit 23.11.2026).
 # Die GitHub-Integration liest den Ordner supabase/ in diesem Repository.
 # Beim Push auf main werden nur NEUE Dateien in supabase/migrations/ in die
 # Produktionsdatenbank eingespielt. Auth-, API- und Seed-Einstellungen
