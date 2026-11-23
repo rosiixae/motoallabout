@@ -6,7 +6,7 @@
 
 Den geheimen Schlüssel (service_role / secret key) niemals in die App oder in Dateien schreiben.
 
-## Eingespielte Migrationen (Stand 18.11.2026)
+## Eingespielte Migrationen (Stand 23.11.2026)
 
 Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt mit der Versionsnummer, unter der Supabase die Migration gespeichert hat. So weiss Supabase, dass diese Dateien schon eingespielt sind.
 
@@ -19,6 +19,7 @@ Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt m
 | 005 | 20261122150000_005_delete_account.sql | Funktion delete_my_account (Konto in der App löschen) |
 | 006 | 20261122160000_006_tips.sql | 14 Tipps & Tricks aus dem Prototyp |
 | 007 | 20261123150000_007_model_data.sql | Modelldaten Phase 9: 52 geprüft, 20 prüfen, 7 offen; Quellen S0–S23 mit Titel und Link |
+| 008 | 20261123160000_008_model_data.sql | Offizielle Handbücher für SWM SM 125 R, Zontes 368 G, Voge 900 DSX, Yamaha RayZR; Zontes 368 G jetzt Roller mit Riemenantrieb; Quellen S24–S31; Abgleich-Skript gleicht neu auch Kategorie, Antrieb und Baujahre ab |
 
 ## GitHub-Integration (Deploy to production)
 
@@ -30,7 +31,7 @@ Jede **neue** Datei in `supabase/migrations/`, die auf `main` landet, wird autom
 - Nie eine eingespielte Datei ändern oder umbenennen. Jede Änderung ist eine neue Datei.
 - Neue Datei immer mit Zeitstempel davor, später als die letzte: `JJJJMMTTHHMMSS_004_beschreibung.sql`, z. B. `20261125120000_004_tipps.sql`.
 - Neue Modelle: CSV ergänzen, `python3 datenbank/make_seed.py . <datei>` gibt die Vorlage. Daraus nur die neuen Zeilen in eine neue Migration übernehmen.
-- Geänderte Modellwerte (Intervalle, Ölsorte, Status, Hinweis, Quellen): `motorrad-liste-schweiz.csv` und `datenbank/quellen.csv` anpassen, dann `python3 datenbank/make_model_update.py . supabase/migrations/<zeitstempel>_00X_model_data.sql` – die Datei gleicht alle bestehenden Modelle ab.
+- Geänderte Modellwerte (Kategorie, Antrieb, Baujahre, Intervalle, Ölsorte, Status, Hinweis, Quellen): `motorrad-liste-schweiz.csv` und `datenbank/quellen.csv` anpassen, dann `python3 datenbank/make_model_update.py . supabase/migrations/<zeitstempel>_00X_model_data.sql` – die Datei gleicht alle bestehenden Modelle ab.
 - Nach jeder Änderung die Security Advisors im Dashboard prüfen.
 
 ## Geprüft

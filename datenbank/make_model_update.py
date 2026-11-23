@@ -3,13 +3,14 @@
 Aufruf: python3 make_model_update.py <projektordner> <ausgabe.sql>
 
 Liest motorrad-liste-schweiz.csv und datenbank/quellen.csv und gleicht für
-alle bestehenden Modelle ab: Ölsorte, Ölmenge, Status, Hinweis, Öl- und
-Ventilintervalle sowie die Quellen. Neue Modelle legt das Skript NICHT an.
+alle bestehenden Modelle ab: Kategorie, Antrieb, Baujahre, Ölsorte, Ölmenge,
+Status, Hinweis, Öl- und Ventilintervalle sowie die Quellen. Neue Modelle legt das Skript NICHT an.
 Die Migration darf mehrfach laufen (gleiches Ergebnis).
 """
 import csv
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -32,8 +33,13 @@ def bikes_from_csv(path):
                 break
         to_int = lambda v: int(v) if seed.num(v) else None
         oil_l = seed.liters(r["Ölmenge mit Filter"])
+        years = re.findall(r"\d{4}", r["Baujahre"])
         out.append({
             "brand_slug": seed.slugify(brand), "slug": seed.slugify(name),
+            "category": seed.CATEGORY[r["Kategorie (Pixel-Motorrad)"]],
+            "drive": seed.DRIVE[r["Antrieb"]],
+            "year_from": int(years[0]) if years else None,
+            "year_to": int(years[1]) if len(years) > 1 else None,
             "oil_spec": r["Ölsorte"] or None, "oil_l": float(oil_l) if oil_l else None,
             "status": seed.STATUS[r["Status"]], "note": r["Hinweis"] or None,
             "sources": [s.strip() for s in r["Quellen"].split(",") if s.strip()],
@@ -79,7 +85,8 @@ on conflict (code) do update
 create temp table _bikes as
 select x.*, v.id as variant_id
 from jsonb_to_recordset($json${dump(bikes)}$json$::jsonb) as x(
-  brand_slug text, slug text, oil_spec text, oil_l numeric, status text, note text,
+  brand_slug text, slug text, category text, drive text, year_from smallint, year_to smallint,
+  oil_spec text, oil_l numeric, status text, note text,
   sources text[], oil_km integer, oil_months integer, valve_km integer)
 join public.manufacturers m on m.slug = x.brand_slug
 join public.models md on md.manufacturer_id = m.id and md.slug = x.slug
@@ -93,15 +100,25 @@ begin
 end
 $check$;
 
+-- Kategorie (Pixel-Motorrad) und Antrieb (z.B. Kettenpflege ja/nein)
+update public.models md
+set category_code = b.category,
+    drive_type_code = b.drive
+from _bikes b, public.model_variants v
+where v.id = b.variant_id and md.id = v.model_id
+  and (md.category_code, md.drive_type_code) is distinct from (b.category, b.drive);
+
 update public.model_variants v
-set oil_spec = b.oil_spec,
+set year_from = b.year_from,
+    year_to = b.year_to,
+    oil_spec = b.oil_spec,
     oil_capacity_with_filter_l = b.oil_l,
     data_status_code = b.status,
     notes = b.note
 from _bikes b
 where v.id = b.variant_id
-  and (v.oil_spec, v.oil_capacity_with_filter_l, v.data_status_code, v.notes)
-      is distinct from (b.oil_spec, b.oil_l, b.status, b.note);
+  and (v.year_from, v.year_to, v.oil_spec, v.oil_capacity_with_filter_l, v.data_status_code, v.notes)
+      is distinct from (b.year_from, b.year_to, b.oil_spec, b.oil_l, b.status, b.note);
 
 -- Intervalle: nur Öl und Ventile kommen aus der Liste
 insert into public.model_maintenance_intervals
