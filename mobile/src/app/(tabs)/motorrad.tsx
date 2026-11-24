@@ -135,6 +135,10 @@ export default function MeinMotorrad() {
         ) : (
           <Small>Eigenes Modell: die App rechnet mit allgemeinen Richtwerten.</Small>
         )}
+        {variant?.notes ? <Small>{variant.notes}</Small> : null}
+        {variant && variant.data_status_code !== 'verified' ? (
+          <Small>Bis dahin nutzt die App, wo nötig, allgemeine Richtwerte. Eigene Intervalle kannst du bei jeder Wartung festlegen.</Small>
+        ) : null}
       </Card>
 
       <View style={{ gap: 4 }}>

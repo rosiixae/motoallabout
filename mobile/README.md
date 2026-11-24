@@ -53,7 +53,7 @@ npx expo start
 Hake ab, was klappt. Wenn etwas nicht klappt: **Screenshot** (im Emulator: Kamera-Symbol in der Seitenleiste) und kurz aufschreiben, was du gemacht hast.
 
 ### Konto
-- [ ] Registrieren mit einer echten E-Mail-Adresse
+- [ ] Registrieren mit **der E-Mail-Adresse, mit der du bei Supabase angemeldet bist** (Supabase verschickt im Moment nur an diese Adresse und nur wenige E-Mails pro Stunde)
 - [ ] Bestätigungs-E-Mail kommt an, Link anklicken (lädt danach eine leere oder Fehler-Seite: zuerst ignorieren, aber notieren)
 - [ ] Einloggen
 - [ ] Passwort vergessen: E-Mail kommt an
