@@ -6,7 +6,7 @@
 
 Den geheimen Schlüssel (service_role / secret key) niemals in die App oder in Dateien schreiben.
 
-## Eingespielte Migrationen (Stand 23.11.2026)
+## Eingespielte Migrationen (Stand 24.11.2026)
 
 Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt mit der Versionsnummer, unter der Supabase die Migration gespeichert hat. So weiss Supabase, dass diese Dateien schon eingespielt sind.
 
