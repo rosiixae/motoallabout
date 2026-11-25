@@ -25,6 +25,7 @@ Stand: 24.11.2026
 ## Vor der Veröffentlichung nötig (nicht für den Test)
 
 - **E-Mail-Versand:** Supabase verschickt ohne eigenen E-Mail-Dienst (SMTP) nur an Mitglieder des Supabase-Teams und nur wenige E-Mails pro Stunde. Für den Test reicht das (mit der eigenen Supabase-E-Mail registrieren). Vor dem Start einen E-Mail-Dienst einrichten.
+- **E-Mail-Texte:** Bestätigung und Passwort-Zurücksetzen sind noch englisch mit Supabase-Absender; auf Deutsch und «MotoAllAbout» umstellen (Supabase → Authentication → Emails).
 - **Link in der Bestätigungs-E-Mail:** Zielseite (Site URL) in Supabase festlegen, z. B. eine einfache Seite «E-Mail bestätigt».
 
 ## Offene Entscheidungen
