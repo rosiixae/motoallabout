@@ -38,7 +38,10 @@ function ensureChannel(): Promise<boolean> {
         return true;
       } catch {
         try {
-          await Notifications.setNotificationChannelAsync(CHANNEL_ID, { name: 'Erinnerungen' });
+          await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
+            name: 'Erinnerungen',
+            importance: Notifications.AndroidImportance.DEFAULT,
+          });
           return true;
         } catch {
           return false;
