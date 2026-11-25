@@ -17,19 +17,56 @@ Notifications.setNotificationHandler({
 const MAINTENANCE_PREFIX = 'wartung-';
 const KM_REMINDER_ID = 'km-woechentlich';
 
+const CHANNEL_ID = 'erinnerungen';
+let channelReady: Promise<boolean> | null = null;
+
+/** Android: Kanal «Erinnerungen» einmal anlegen. Klappt das nicht, nutzt Android seinen Standardkanal. */
+function ensureChannel(): Promise<boolean> {
+  if (Platform.OS !== 'android') return Promise.resolve(true);
+  if (!channelReady) {
+    channelReady = (async () => {
+      try {
+        await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
+          name: 'Erinnerungen',
+          description: 'Wartung, Saison, Termine und Kilometerstand',
+          importance: Notifications.AndroidImportance.DEFAULT,
+          enableVibrate: true,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#C2410C',
+          showBadge: false,
+        });
+        return true;
+      } catch {
+        try {
+          await Notifications.setNotificationChannelAsync(CHANNEL_ID, { name: 'Erinnerungen' });
+          return true;
+        } catch {
+          return false;
+        }
+      }
+    })();
+  }
+  return channelReady;
+}
+
+/** Fragt bei Bedarf nach der Erlaubnis für Mitteilungen. Wirft nie einen Fehler. */
 export async function ensurePermission(): Promise<boolean> {
   if (Platform.OS === 'web') return false;
-  const current = await Notifications.getPermissionsAsync();
-  if (current.granted) return true;
-  if (!current.canAskAgain) return false;
-  const asked = await Notifications.requestPermissionsAsync();
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('erinnerungen', {
-      name: 'Erinnerungen',
-      importance: Notifications.AndroidImportance.DEFAULT,
-    });
+  try {
+    // Android 13+: Kanal vor der Anfrage anlegen, sonst erscheint die Anfrage nicht
+    await ensureChannel();
+    const current = await Notifications.getPermissionsAsync();
+    if (current.granted) return true;
+    if (!current.canAskAgain) return false;
+    const asked = await Notifications.requestPermissionsAsync();
+    return asked.granted;
+  } catch {
+    return false;
   }
-  return asked.granted;
+}
+
+async function channelOption(): Promise<{ channelId?: string }> {
+  return (await ensureChannel()) && Platform.OS === 'android' ? { channelId: CHANNEL_ID } : {};
 }
 
 function at(date: Date, hour: number, minute = 0): Date {
@@ -41,7 +78,7 @@ async function scheduleAt(identifier: string, title: string, body: string, date:
   await Notifications.scheduleNotificationAsync({
     identifier,
     content: { title, body, data },
-    trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date, channelId: 'erinnerungen' },
+    trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date, ...(await channelOption()) },
   });
 }
 
@@ -108,7 +145,13 @@ export async function setWeeklyKmReminder(on: boolean): Promise<void> {
     await Notifications.scheduleNotificationAsync({
       identifier: KM_REMINDER_ID,
       content: { title: 'Kilometerstand eintragen', body: 'Bist du diese Woche gefahren? Trag den Stand ein, dann stimmen die Erinnerungen.' },
-      trigger: { type: Notifications.SchedulableTriggerInputTypes.WEEKLY, weekday: 1, hour: 18, minute: 0, channelId: 'erinnerungen' },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
+        weekday: 1,
+        hour: 18,
+        minute: 0,
+        ...(await channelOption()),
+      },
     });
   } catch {
     // ignorieren
