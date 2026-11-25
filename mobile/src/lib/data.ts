@@ -282,7 +282,7 @@ export type CalendarInput = {
 /** Legt einen Termin an und gibt seine ID zurück. */
 export async function addCalendarEvent(userId: string, input: CalendarInput): Promise<string> {
   const row = check(await supabase.from('calendar_events').insert({ ...input, user_id: userId }).select('id').single());
-  return (row as { id: string }).id;
+  return (row as unknown as { id: string }).id;
 }
 
 export async function getCalendarEvent(id: string): Promise<CalendarEvent | null> {
