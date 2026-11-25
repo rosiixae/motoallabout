@@ -118,6 +118,14 @@ export type CalendarEvent = {
   workshop_id: string | null;
   task_type_code: string | null;
   notes: string | null;
+  /** Ausfahrt: Treffpunkt. Werkstatt: Adresse. */
+  location: string | null;
+  /** Ausfahrt: Ziel. */
+  destination: string | null;
+  /** Werkstatt: Name. */
+  place_name: string | null;
+  phone: string | null;
+  website: string | null;
 };
 
 export type Workshop = {

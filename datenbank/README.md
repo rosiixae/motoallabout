@@ -21,6 +21,7 @@ Die Migrationen liegen im Ordner `supabase/migrations/`. Der Dateiname beginnt m
 | 007 | 20261123150000_007_model_data.sql | Modelldaten Phase 9: 52 geprüft, 20 prüfen, 7 offen; Quellen S0–S23 mit Titel und Link |
 | 008 | 20261123160000_008_model_data.sql | Offizielle Handbücher für SWM SM 125 R, Zontes 368 G, Voge 900 DSX, Yamaha RayZR; Zontes 368 G jetzt Roller mit Riemenantrieb; Quellen S24–S31; Abgleich-Skript gleicht neu auch Kategorie, Antrieb und Baujahre ab |
 | 009 | 20261124120000_009_model_data.sql | Prüfung der „prüfen“-Modelle mit offiziellen Handbüchern: GSX-8S und V-Strom 800DE (Europa: Öl 12'000 km statt 6'000 km), XMAX 125, MT-125 und CB1000 Hornet jetzt geprüft; NMAX 125, XMAX 300 und F 800 GS ergänzt; Quellen S32–S39 |
+| 010 | 20261125120000_010_calendar_details.sql | Termine: Treffpunkt und Ziel (Ausfahrt), Name, Telefon, Website und Adresse (Werkstatt) |
 
 ## GitHub-Integration (Deploy to production)
 

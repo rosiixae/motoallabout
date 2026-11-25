@@ -272,10 +272,36 @@ export type CalendarInput = {
   motorcycle_id: string | null;
   task_type_code: string | null;
   notes: string | null;
+  location?: string | null;
+  destination?: string | null;
+  place_name?: string | null;
+  phone?: string | null;
+  website?: string | null;
 };
 
-export async function addCalendarEvent(userId: string, input: CalendarInput): Promise<void> {
-  check(await supabase.from('calendar_events').insert({ ...input, user_id: userId }));
+/** Legt einen Termin an und gibt seine ID zurück. */
+export async function addCalendarEvent(userId: string, input: CalendarInput): Promise<string> {
+  const row = check(await supabase.from('calendar_events').insert({ ...input, user_id: userId }).select('id').single());
+  return (row as { id: string }).id;
+}
+
+export async function getCalendarEvent(id: string): Promise<CalendarEvent | null> {
+  return check(await supabase.from('calendar_events').select('*').eq('id', id).is('deleted_at', null).maybeSingle());
+}
+
+/** Kontaktdaten der zuletzt eingetragenen Werkstatt, zum Vorausfüllen. */
+export async function getLastWorkshopContact(): Promise<Pick<CalendarEvent, 'place_name' | 'phone' | 'website' | 'location'> | null> {
+  return check(
+    await supabase
+      .from('calendar_events')
+      .select('place_name, phone, website, location')
+      .eq('event_type', 'workshop_appointment')
+      .not('place_name', 'is', null)
+      .is('deleted_at', null)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  );
 }
 
 export async function deleteCalendarEvent(id: string): Promise<void> {

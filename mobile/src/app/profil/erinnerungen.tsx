@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Linking, Switch, View } from 'react-native';
+import { AppState, Linking, Switch, View } from 'react-native';
 
 import { Body, Button, Card, Chip, ErrorBox, H2, Loading, Screen, Small } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
@@ -14,7 +14,7 @@ import {
 import { formatNumber } from '@/lib/format';
 import { useGarage } from '@/lib/garage';
 import { useFocusData } from '@/lib/hooks';
-import { ensurePermission, hasWeeklyKmReminder, setWeeklyKmReminder } from '@/lib/notifications';
+import { ensurePermission, hasPermission, hasWeeklyKmReminder, setWeeklyKmReminder } from '@/lib/notifications';
 import type { NotificationPreferences } from '@/lib/types';
 import { colors, useTheme } from '@/theme/theme';
 
@@ -52,10 +52,22 @@ export default function Erinnerungen() {
     void ensurePermission().then(setPermission);
   }, [userId]);
 
+  // Nach dem Zurückkommen aus den Handy-Einstellungen neu prüfen
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') void hasPermission().then(setPermission);
+    });
+    return () => sub.remove();
+  }, []);
+
   async function change(changes: Partial<Omit<NotificationPreferences, 'user_id'>>) {
     if (!userId || !prefs) return;
     const previous = prefs;
     setPrefs({ ...prefs, ...changes });
+    // Wird eine Erinnerung eingeschaltet, bei Bedarf gleich um Erlaubnis fragen
+    if (Object.values(changes).some((v) => v === true) && !permission) {
+      void ensurePermission().then(setPermission);
+    }
     try {
       await updateNotificationPreferences(userId, changes);
     } catch {
@@ -96,7 +108,7 @@ export default function Erinnerungen() {
               value={weekly}
               onChange={(v) => {
                 setWeekly(v);
-                void setWeeklyKmReminder(v);
+                void setWeeklyKmReminder(v).then(() => hasPermission().then(setPermission));
               }}
             />
           </Card>

@@ -1,10 +1,10 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 
 import { Button, Chip, ErrorBox, Field, Screen, Small } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
-import { addCalendarEvent } from '@/lib/data';
+import { addCalendarEvent, getLastWorkshopContact } from '@/lib/data';
 import { formatDate, parseSwissDate, toIsoDate } from '@/lib/format';
 import { useGarage } from '@/lib/garage';
 import { scheduleEventReminder } from '@/lib/notifications';
@@ -29,6 +29,27 @@ export default function NeuerTermin() {
     (types.find((t) => t.code === params.type)?.code ?? 'other') as CalendarEvent['event_type'],
   );
   const [notes, setNotes] = useState('');
+  const [location, setLocation] = useState('');
+  const [destination, setDestination] = useState('');
+  const [placeName, setPlaceName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [website, setWebsite] = useState('');
+  const [prefilled, setPrefilled] = useState(false);
+
+  // Werkstatt: Angaben vom letzten Werkstatt-Termin vorschlagen
+  useEffect(() => {
+    if (type !== 'workshop_appointment' || prefilled) return;
+    setPrefilled(true);
+    getLastWorkshopContact()
+      .then((w) => {
+        if (!w) return;
+        setPlaceName((v) => v || w.place_name || '');
+        setPhone((v) => v || w.phone || '');
+        setWebsite((v) => v || w.website || '');
+        setLocation((v) => v || w.location || '');
+      })
+      .catch(() => {});
+  }, [type, prefilled]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,9 +69,12 @@ export default function NeuerTermin() {
     }
     const [y, mo, d] = iso.split('-').map(Number);
     const start = new Date(y, mo - 1, d, hours, minutes);
+    const isTour = type === 'tour';
+    const isWorkshop = type === 'workshop_appointment';
+    const clean = (v: string) => v.trim() || null;
     setBusy(true);
     try {
-      await addCalendarEvent(userId, {
+      const id = await addCalendarEvent(userId, {
         title: title.trim(),
         starts_at: start.toISOString(),
         is_all_day: !time.trim(),
@@ -58,9 +82,14 @@ export default function NeuerTermin() {
         motorcycle_id: current?.id ?? null,
         task_type_code: params.task || null,
         notes: notes.trim() || null,
+        location: isTour || isWorkshop ? clean(location) : null,
+        destination: isTour ? clean(destination) : null,
+        place_name: isWorkshop ? clean(placeName) : null,
+        phone: isWorkshop ? clean(phone) : null,
+        website: isWorkshop ? clean(website) : null,
       });
       await scheduleEventReminder(title.trim(), start, !time.trim());
-      router.back();
+      router.replace({ pathname: '/termine/[id]', params: { id } });
     } catch {
       setError('Speichern hat nicht geklappt. Bitte versuche es nochmals.');
     } finally {
@@ -88,10 +117,33 @@ export default function NeuerTermin() {
             ))}
           </View>
         </View>
+        {type === 'tour' ? (
+          <>
+            <Field label="Treffpunkt" value={location} onChangeText={setLocation} placeholder="z. B. Parkplatz Seedamm, Pfäffikon SZ" />
+            <Field label="Ziel" value={destination} onChangeText={setDestination} placeholder="z. B. Klausenpass" />
+          </>
+        ) : null}
+        {type === 'workshop_appointment' ? (
+          <>
+            <Field label="Werkstatt" value={placeName} onChangeText={setPlaceName} placeholder="z. B. Moto Muster AG" />
+            <Field label="Telefon" value={phone} onChangeText={setPhone} placeholder="z. B. 044 123 45 67" keyboardType="phone-pad" />
+            <Field
+              label="Website"
+              value={website}
+              onChangeText={setWebsite}
+              placeholder="z. B. moto-muster.ch"
+              keyboardType="url"
+              autoCapitalize="none"
+            />
+            <Field label="Adresse" value={location} onChangeText={setLocation} placeholder="z. B. Hauptstrasse 1, 8000 Zürich" />
+          </>
+        ) : null}
         <Field label="Notiz (freiwillig)" value={notes} onChangeText={setNotes} multiline />
         {error ? <ErrorBox message={error} /> : null}
         <Button label="Im Kalender eintragen" onPress={save} loading={busy} />
-        <Small>Die App erinnert dich am Tag vorher.</Small>
+        <Small>
+          Die App erinnert dich am Tag vorher.{type === 'tour' ? ' Nach dem Speichern kannst du Leute per E-Mail einladen.' : ''}
+        </Small>
       </Screen>
     </KeyboardAvoidingView>
   );

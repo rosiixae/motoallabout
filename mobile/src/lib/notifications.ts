@@ -68,6 +68,16 @@ export async function ensurePermission(): Promise<boolean> {
   }
 }
 
+/** Nur nachsehen, ob Mitteilungen erlaubt sind (ohne zu fragen). */
+export async function hasPermission(): Promise<boolean> {
+  if (Platform.OS === 'web') return false;
+  try {
+    return (await Notifications.getPermissionsAsync()).granted;
+  } catch {
+    return false;
+  }
+}
+
 async function channelOption(): Promise<{ channelId?: string }> {
   return (await ensureChannel()) && Platform.OS === 'android' ? { channelId: CHANNEL_ID } : {};
 }

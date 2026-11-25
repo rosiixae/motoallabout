@@ -61,8 +61,9 @@ export default function MeinMotorrad() {
   const nextMfk = maintenance.data?.statuses.find((s) => s.code === 'mfk')?.dueOn ?? null;
 
   function shop(query: string) {
-    const q = encodeURIComponent(`${query} ${title.full} kaufen Schweiz`);
-    void WebBrowser.openBrowserAsync(`https://www.google.com/search?q=${q}`);
+    // Google Shopping: Angebote mit Preisen aus verschiedenen Shops (Schweiz)
+    const q = encodeURIComponent(`${query} ${title.full}`);
+    void WebBrowser.openBrowserAsync(`https://www.google.ch/search?tbm=shop&gl=ch&hl=de&q=${q}`);
   }
 
   return (
@@ -168,7 +169,7 @@ export default function MeinMotorrad() {
             </View>
             <View style={{ flexShrink: 1 }}>
               <Text style={{ fontSize: 15, fontWeight: '700', color: colors.text }}>{u.label}</Text>
-              <Text style={{ fontSize: 12, fontWeight: '600', color: accent.accent }}>Zu den Shops ›</Text>
+              <Text style={{ fontSize: 12, fontWeight: '600', color: accent.accent }}>Preise vergleichen ›</Text>
             </View>
           </Pressable>
         ))}

@@ -58,8 +58,9 @@ export default function Kalender() {
         date: toIsoDate(local),
         time: e.is_all_day ? null : `${String(local.getHours()).padStart(2, '0')}:${String(local.getMinutes()).padStart(2, '0')}`,
         title: e.title,
-        sub: typeText[e.event_type],
+        sub: [typeText[e.event_type], e.event_type === 'tour' ? e.destination : e.place_name].filter(Boolean).join(' · '),
         kind: 'event',
+        onPress: () => router.push({ pathname: '/termine/[id]', params: { id: e.id } }),
         onLongPress: () =>
           Alert.alert('Termin löschen?', e.title, [
             { text: 'Abbrechen', style: 'cancel' },
